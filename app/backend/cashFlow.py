@@ -1,7 +1,8 @@
+# Importy modulů:
 import sqlite3
 import os.path
 
-
+# Proměnné, které tvoří a editují databázi:
 createIncome = "CREATE TABLE income (id INTEGER PRIMARY KEY, amount INTEGER, source VARCHAR, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 createOutcome = "CREATE TABLE outcome (id INTEGER PRIMARY KEY, amount INTEGER, source VARCHAR), date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;"
 insertIncome = "INSERT INTO income (amount, source) VALUES (?, ?);"
@@ -10,7 +11,7 @@ selectIncome = "SELECT * FROM income"
 selectOutcome = "SELECT * FROM outcome"
 
 
-
+# Metody pro práci s databází s výpisy:
 def createDatabase():
     """
     pokud databáze neexistuje, vytvoří ji a přidá tabulky přijmů a výdajů

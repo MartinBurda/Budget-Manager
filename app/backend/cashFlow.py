@@ -6,6 +6,10 @@ createIncome = "CREATE TABLE income (id INTEGER PRIMARY KEY, amount INTEGER, sou
 createOutcome = "CREATE TABLE outcome (id INTEGER PRIMARY KEY, amount INTEGER, source VARCHAR), date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;"
 insertIncome = "INSERT INTO income (amount, source) VALUES (?, ?);"
 insertOutcome = "INSERT INTO outcome (amount, source) VALUES (?, ?);"
+selectIncome = "SELECT * FROM income"
+selectOutcome = "SELECT * FROM outcome"
+
+
 
 def createDatabase():
     """
@@ -29,4 +33,24 @@ def addOutcome():
     """
     with sqlite3.connect("budget_database.sqlite") as db:
         db.execute(insertIncome)
-    
+
+
+# Výpisy z databáze:
+def getIncome():
+    """
+    výpis příjmů
+    """
+    with sqlite3.connect("budget_database.sqlite") as db:
+        cursor = db.execute(selectIncome)
+        income = cursor.fetchone()
+        return income
+
+def getOutcome():
+    """
+    výpis výdajů
+    """
+    with sqlite3.connect("budget_database.sqlite") as db:
+        cursor = db.execute(selectOutcome)
+        outcome = cursor.fetchone()
+        return outcome
+

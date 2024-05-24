@@ -46,20 +46,23 @@ def add_expense():
     label_result.pack()
 
 def add_savings():
-    amount = entry_savings.get()
-    source = entry_savings_source.get()
-    if amount and source:
+    amount = entry_savings_amount.get()
+    target = entry_savings_target.get()
+    needed_amount = entry_savings_needed_amount.get()
+    if amount and target and needed_amount:
         try:
             amount = float(amount)
-            cashFlow.addSavings(amount, source)
-            label_result.config(text=f"Přidaný výdaj: {amount} pro {source}")
-            entry_savings.delete(0, END)
-            entry_savings_source.delete(0, END)
+            needed_amount = float(needed_amount)
+            cashFlow.addSaving(amount, target, needed_amount)
+            label_result.config(text=f"Přidané spoření: {amount} pro {target}")
+            entry_savings_amount.delete(0, END)
+            entry_savings_target.delete(0, END)
+            entry_savings_needed_amount.delete(0, END)
             show_savings()
         except ValueError:
             label_result.config(text="Špatná suma. Prosím zadejte správnou sumu!")
     else:
-        label_result.config(text="Prosím zadejte obojí sumu a spoření pro přidání ke spoření!")
+        label_result.config(text="Prosím zadejte všechny potřebné údaje pro přidání spoření!")
     label_result.pack()
 
 def show_incomes():
@@ -91,8 +94,8 @@ def show_savings():
     tree.delete(*tree.get_children())
     savings = cashFlow.getSavings()
     if savings:
-        for savings in savings:
-            tree.insert("", "end", values=(savings[0], savings[1], savings[2]))
+        for saving in savings:
+            tree.insert("", "end", values=(saving[0], saving[1], saving[2]))
     else:
         tree.insert("", "end", values=("Žádné spoření nebylo nenalezeno.", "", ""))
     tree.pack(fill=BOTH, expand=True)
@@ -135,10 +138,12 @@ def show_expense_entry():
 
 def show_savings_entry():
     hide_all_widgets()
-    label_savings.pack()
-    entry_savings.pack()
-    label_savings_source.pack()
-    entry_savings_source.pack()
+    label_savings_target.pack()
+    entry_savings_target.pack()
+    label_savings_needed_amount.pack()
+    entry_savings_needed_amount.pack()
+    label_savings_amount.pack()
+    entry_savings_amount.pack()
     add_savings_btn.pack()
     back_btn.pack()
     tree.pack(fill=BOTH, expand=True)
@@ -172,34 +177,14 @@ label_expense_source = tk.Label(root, text="Zadejte zdroj výdajů:")
 entry_expense_source = ttk.Entry(root)
 add_expense_btn = ttk.Button(root, text="Přidat výdaj", command=add_expense)
 
-label_savings = tk.Label(root, text="Zadejte sumu pro spoření:")
-entry_savings = ttk.Entry(root)
-label_savings_source = tk.Label(root, text="Zadejte zdroj spoření:")
-entry_savings_source = ttk.Entry(root)
+label_savings_target = tk.Label(root, text="Zadejte název na co spoříte:")
+entry_savings_target = ttk.Entry(root)
+label_savings_needed_amount = tk.Label(root, text="Zadejte cílovou částku spoření:")
+entry_savings_needed_amount = ttk.Entry(root)
+label_savings_amount = tk.Label(root, text="Zadejte částku kterou chcete uložit:")
+entry_savings_amount = ttk.Entry(root)
 add_savings_btn = ttk.Button(root, text="Přidat spoření", command=add_savings)
 
 back_btn = ttk.Button(root, text="Zpět", command=show_main_menu)
 
 root.mainloop()
-
-
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

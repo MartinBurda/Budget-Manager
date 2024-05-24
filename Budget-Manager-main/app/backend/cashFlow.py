@@ -6,12 +6,15 @@ import os.path
 createIncome = "CREATE TABLE IF NOT EXISTS income (id INTEGER PRIMARY KEY, amount INTEGER, source VARCHAR, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 createOutcome = "CREATE TABLE IF NOT EXISTS outcome (id INTEGER PRIMARY KEY, amount INTEGER, source VARCHAR, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 createSavings = "CREATE TABLE IF NOT EXISTS savings (id INTEGER PRIMARY KEY, amount INTEGER, source VARCHAR, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
+createCurrentState = "CREATE TABLE IF NOT EXISTS money_status (id INTEGER PRIMARY KEY, current_amount INTEGER, status_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 insertIncome = "INSERT INTO income (amount, source) VALUES (?, ?);"
 insertOutcome = "INSERT INTO outcome (amount, source) VALUES (?, ?);"
 insertSavings = "INSERT INTO savings (amount, source) VALUES (?, ?);"
+insertCurrentState = "INSERT INTO money_status (current_amount) VALUES (?);"
 selectIncome = "SELECT * FROM income"
 selectOutcome = "SELECT * FROM outcome"
 selectSavings = "SELECT * FROM savings"
+selectCurrentState = "SELECT * FROM money_status"
 
 
 # Metody pro práci s databází s výpisy:
@@ -73,5 +76,13 @@ def getSavings():
         cursor = db.execute(selectSavings)
         savings = cursor.fetchall()
         return savings
-
+    
+def getCurrentState():
+    """
+    výpis aktuálního počtu peněz
+    """
+    with sqlite3.connect("budget_database.sqlite") as db:
+        cursor = db.execute(selectCurrentState)
+        money_status = cursor.fetchall()
+        return money_status
 
